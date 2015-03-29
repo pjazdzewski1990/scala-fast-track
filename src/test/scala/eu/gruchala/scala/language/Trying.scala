@@ -66,8 +66,8 @@ class Trying extends FunSpec with GivenWhenThen {
     // Exercises: explore on your own
     // Add a correct implementation to the fixThis method, remove 'pending' and make those tests green!
 
-    pending
     it("can be used as Option") {
+      pending
       def fixThis(arg: Try[Int]): Option[Int] = ???
 
       fixThis(validCast) shouldBe a [Some[_]]

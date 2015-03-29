@@ -10,7 +10,7 @@ import scala.io.Source
 
 class CourseReporter extends Reporter {
 
-  private var tests = List[TestSucceeded]()
+  private var tests = List[Event]() ///TODO: restrict types to something with `suiteName` property
 
   def getStyle() =
     """
@@ -20,6 +20,7 @@ class CourseReporter extends Reporter {
       |.accordion-content.default {display: block;}
       |
       |.code {background-color: grey;}
+      |.pending {background-color:  red;}
     """.stripMargin
 
   def createAccordionScript() =
@@ -55,19 +56,31 @@ class CourseReporter extends Reporter {
     } getOrElse("Code is missing :(")
   }
 
-  def showSingle(results: List[TestSucceeded]) = {
-    results.reverse.map(tr => {
-      <div>
-        <h4 class="accordion-toggle">{tr.testText}</h4>
-        <div class="accordion-content">
-          <p>{getSource(tr)}</p>
+  def showSingle(results: List[Event]) = {
+    results.reverse.map {
+      case tr : TestSucceeded =>
+        <div>
+          <h4 class="accordion-toggle">{tr.testText}</h4>
+          <div class="accordion-content">
+            {getSource(tr)}
+          </div>
         </div>
-      </div>
-    })
+      case tr : TestPending =>
+        <div>
+          <h4 class="accordion-toggle">TODO: {tr.testText}</h4>
+          <div class="accordion-content">
+            <p class="pending">PENDING EXCERCISE</p>
+          </div>
+        </div>
+    }
   }
 
   def showResults() = {
-    val groupedTestResults = tests.groupBy(_.suiteName)
+    val groupedTestResults = tests.groupBy(x => x match {
+      case e : TestSucceeded => e.suiteName
+      case e : TestPending => e.suiteName
+      case _ => throw new IllegalArgumentException("Unexpected event type")
+    })
     groupedTestResults.map { case (suite, tests) =>
       <div>
         <h4 class="accordion-toggle main">{suite}</h4>
@@ -110,12 +123,13 @@ class CourseReporter extends Reporter {
   def apply(event: Event) {
     event match {
       case e: TestSucceeded =>
-        tests = e :: tests
+        tests = event :: tests
+      case e: TestPending =>
+        tests = event :: tests
       case e: RunCompleted =>
         println(s"End ${e}")
         createReport()
       case e =>
-        println(s"  event ==== ${e}")
     }
   }
 }
