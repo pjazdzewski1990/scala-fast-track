@@ -11,6 +11,7 @@ class Implicits extends FunSpec with GivenWhenThen {
     it("need special import") {
       import scala.language.implicitConversions
     }
+    //~
     it("allows to enrich types") {
       class RichString(a: String) {
         implicit def stringToInt(value: String): Int = Integer.valueOf(value)
@@ -27,6 +28,7 @@ class Implicits extends FunSpec with GivenWhenThen {
 
       //Scala has RichInt, RichBoolean etc
     }
+    //~
   }
 
   describe("Implicitly") {
@@ -34,6 +36,7 @@ class Implicits extends FunSpec with GivenWhenThen {
       import implicits.Implicitly._ //don't want to work inside spec
       new B().doStuff shouldBe "Found secret message: let's roll"
     }
+    //~
   }
 
   describe("Implicit parameters") {
@@ -52,5 +55,6 @@ class Implicits extends FunSpec with GivenWhenThen {
 
       "JUG".welcome shouldBe "Woohooo! JUG"
     }
+    //~
   }
 }

@@ -9,7 +9,7 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
     it("can be procedures which return Unit and have side effects") {
       def pr(x: Int): Unit = println(x)
     }
-
+    //~
     it("can be pure functions and referentially transparent") {
       val f = (x: Int) => x
 
@@ -17,12 +17,13 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
       f shouldBe a [(_) => _]
       f(3) shouldBe 3
     }
-
+    //~
     it("and they don't need return type specified") {
       def square(x: Int) = x * x
 
       square(5) shouldBe 25
     }
+    //~
   }
 
   describe("Functions") {
@@ -36,11 +37,12 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
       invoke(square) shouldBe 16
       invoke(f) shouldBe 2
     }
-
+    //~
     it("can be anonymous too named function literals") {
       def invoke(x: Int => Int) = x(4)
       invoke((x: Int) => x * x - x) shouldBe 12
     }
+    //~
   }
 
   describe("Partial functions PartialFunction[-A, +B]") {
@@ -53,7 +55,7 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
       // the method collect can use isDefinedAt to select which members to collect
       oneToTen collect isEven shouldBe IndexedSeq(2, 4, 6, 8, 10)
     }
-
+    //~
     it("and allow chaining") {
       val onlyOdds = Seq(1, 3, 5, 7)
       val isEven: PartialFunction[Int, Int] = {
@@ -64,6 +66,7 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
       }
       onlyOdds map (isEven orElse isOdd) shouldBe IndexedSeq(1, 3, 5, 7)
     }
+    //~
   }
 
   describe("Partially applied functions") {
@@ -77,5 +80,6 @@ class MethodsAndFunctions extends FunSpec with GivenWhenThen {
 
       countForUK(23.62) shouldBe 28.344
     }
+    //~
   }
 }

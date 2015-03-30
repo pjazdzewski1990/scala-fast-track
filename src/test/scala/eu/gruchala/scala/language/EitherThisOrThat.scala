@@ -23,7 +23,7 @@ class EitherThisOrThat extends FunSpec with GivenWhenThen {
       either.left shouldBe a [LeftProjection[_, _]]
       either.right.get === 124123
     }
-
+    //~
     it("allows to explicitly define Left") {
       val badValue = Left(new IllegalArgumentException)
 
@@ -34,7 +34,7 @@ class EitherThisOrThat extends FunSpec with GivenWhenThen {
       badValue.left shouldBe a [LeftProjection[_, _]]//[LeftProjection[IllegalArgumentException, Nothing]]
       badValue.right shouldBe a [RightProjection[_, _]]//[RightProjection[IllegalArgumentException, Nothing]]
     }
-
+    //~
     it("allows to explicitly define Right") {
       val goodValue = Right("The right result")
 
@@ -42,7 +42,7 @@ class EitherThisOrThat extends FunSpec with GivenWhenThen {
       goodValue.left shouldBe a [LeftProjection[_, _]]//[LeftProjection[Nothing, String]]
       goodValue.right shouldBe a [RightProjection[_, _]]//[RightProjection[Nothing, String]]
     }
-
+    //~
     it("allows to pattern match on Either") {
       val either: Either[String, Int] = Left("value")
       either match {
@@ -50,14 +50,15 @@ class EitherThisOrThat extends FunSpec with GivenWhenThen {
         case Right(r) => fail("Right is not used")
       }
     }
-
-    val goodValue = Right(List(10, 3, 6, 1))
+    //~
     it("one can maintain Left/Right in functional way") {
+      val goodValue = Right(List(10, 3, 6, 1))
       goodValue.right map(_.size) shouldBe Right(4)
       goodValue.right.map(a => a.filter(_ <= 5)) shouldBe Right(List(3, 1))
     }
-
+    //~
     it("allows to use for comprehensions") {
+      val goodValue = Right(List(10, 3, 6, 1))
       (for (r <- goodValue.right) yield r.head) shouldBe Right(10)
     }
   }

@@ -16,8 +16,8 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
         //case class Msisdn(number: String) extends AnyVal
         //class Wrapper(val number: String) extends AnyVal
       }
+      //~
     }
-
     describe("Case classes") {
       it("""with benefits such as:
           |   - immutable, by default constructor treat parameters as `val`s
@@ -33,6 +33,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
         assert(Money(12.3, "PLN") == Money(12.3, "PLN"))
         assert(!Money(12.3, "PLN").eq(Money(12.3, "PLN")))
       }
+      //~
     }
 
     describe("Simple classes") {
@@ -42,7 +43,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
         //producer.msg//does not compile, msg is private
         producer.name shouldBe "BMW"
       }
-
+      //~
       it("and there is a way to define multiple constructors") {
         class WrappedOver(text: String, num: Int) {
           //body of the constructor, any vals will be initialized immediately
@@ -51,7 +52,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
           }
         }
       }
-
+      //~
       it("equals, hashcode and toString must be defined explicitly") {
         class Car(val name: String, val producer: String) {
 
@@ -74,7 +75,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
           }
         }
       }
-
+      //~
       it("for patter matching extractors are needed") {
         class Car(val name: String, val producer: String)
         object Car {//companion object
@@ -103,6 +104,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
           case _ => fail("Default case, not used now")
         }
       }
+      //~
     }
 
     describe("There are Singletons too") {
@@ -117,6 +119,7 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
         }
         SuperService.buildSuperStuff shouldBe "smth"
       }
+      //~
     }
 
     describe("Default parameters") {
@@ -129,12 +132,13 @@ class ClassesAndObjects extends FunSpec with GivenWhenThen {
         case class Money(value: Double = 1L)
         //class Wrapper(val number: String = "ASD") extends AnyVal
       }
-
+      //~
       it("including methods") {
         def getName(by: String = "John") = s"Name: $by"
 
         getName() shouldBe "Name: John"
       }
+      //~
     }
   }
 }

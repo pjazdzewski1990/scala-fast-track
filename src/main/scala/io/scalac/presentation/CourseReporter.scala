@@ -7,6 +7,7 @@ import org.scalatest._
 import org.scalatest.events._
 
 import scala.io.Source
+import scala.xml.Elem
 
 class CourseReporter extends Reporter {
 
@@ -40,20 +41,24 @@ class CourseReporter extends Reporter {
     "ProcessingFutures.scala" -> "futures/ProcessingFutures.scala",
     "ExceptionsOverFutures.scala" -> "futures/ExceptionsOverFutures.scala"
   )
-  def getCode(file: String, line: Int) =  {
+
+  def getCode(file: String, line: Int) =  { //TODO: find a better way of extracting source code
     val fullPath = pathPrefix + sourceMapping.getOrElse(file, file)
-    val fileContents = Source.fromFile(fullPath).getLines.toList.slice(line-2, line + 5) //TODO
+    val wholeFile = Source.fromFile(fullPath).getLines
+    val source = wholeFile.drop(line-1).takeWhile(!_.contains("//~"))
+
     <div>
-      {fileContents.map( s =>
+      {source.map( s => //get spaces right
         <div class="code">{s}</div>
       )}
     </div>
   }
 
-  def getSource(test: TestSucceeded) = {
-    test.location.map { //TODO
-      case LineInFile(lineNumber: Int, fileName: String) => getCode(fileName, lineNumber)
-    } getOrElse("Code is missing :(")
+  def getSource(test: TestSucceeded): Elem = {
+    test.location.flatMap {
+      case LineInFile(lineNumber: Int, fileName: String) => Some(getCode(fileName, lineNumber))
+      case _ => Option.empty[Elem]
+    } getOrElse(<span>Code is missing :(</span>)
   }
 
   def showSingle(results: List[Event]) = {
@@ -72,6 +77,7 @@ class CourseReporter extends Reporter {
             <p class="pending">PENDING EXCERCISE</p>
           </div>
         </div>
+      case _ => <div></div>
     }
   }
 
@@ -81,6 +87,7 @@ class CourseReporter extends Reporter {
       case e : TestPending => e.suiteName
       case _ => throw new IllegalArgumentException("Unexpected event type")
     })
+
     groupedTestResults.map { case (suite, tests) =>
       <div>
         <h4 class="accordion-toggle main">{suite}</h4>
@@ -101,7 +108,7 @@ class CourseReporter extends Reporter {
     <html>
       <head>
         <meta charset="utf-8"/>
-        <title>title</title>
+        <title>Scala Course</title>
         <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
         <style>
           {getStyle()}
@@ -127,9 +134,8 @@ class CourseReporter extends Reporter {
       case e: TestPending =>
         tests = event :: tests
       case e: RunCompleted =>
-        println(s"End ${e}")
         createReport()
-      case e =>
+      case e => //do nothing
     }
   }
 }
