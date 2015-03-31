@@ -98,8 +98,18 @@ class CourseReporter extends Reporter {
     }
   }
 
+  def showProgress() = {
+    val all = tests.length
+    val completed = tests.count {
+      case e : TestSucceeded => true
+      case _ => false
+    }
+    <progress value={ ""+completed } max={ ""+all }></progress>
+  }
+
   def createBody() = {
     <div id="accordion">
+      {showProgress()}
       {showResults()}
     </div>
   }
