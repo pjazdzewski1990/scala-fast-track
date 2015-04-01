@@ -1,0 +1,487 @@
+<html>
+      <head>
+        <meta charset="utf-8"/>
+        <title>Scala Course</title>
+        <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+        <style>
+          
+.accordion-toggle {cursor: pointer; font-style: oblique; font-weight: normal }
+.accordion-toggle.main {cursor: pointer; font-size: 120%; font-weight: bold }
+.accordion-content {display: none;}
+.accordion-content.default {display: block;}
+
+.code {background-color: #6a4;}
+.pending {background-color: #f44;}
+
+
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+   appearance: none;
+
+  width: 250px;
+  height: 20px;
+}
+
+progress[value]::-webkit-progress-value {
+  background-image:
+	   -webkit-linear-gradient(-45deg,
+	                           transparent 33%, rgba(0, 0, 0, .1) 33%,
+	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top,
+	                           rgba(255, 255, 255, .25),
+	                           rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left, #f44, #6a4);
+
+    border-radius: 2px;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+    
+
+#content { margin-right: auto; margin-left: auto; width: 50%; }
+    
+        </style>
+        <script type="text/javascript">
+          
+  $(document).ready(function($) {
+    $('#accordion').find('.accordion-toggle').click(function(){
+
+      //Expand or collapse this panel
+      $(this).next().slideToggle('fast');
+
+    });
+  });
+    
+    </script>
+      </head>
+      <body>
+        <div id="content">
+      <div>
+      <span>
+        <a href="http://www.scalac.io/"><img src="logo.jpg"></img></a>
+      </span>
+      <h1>Welcome to Scala!</h1>
+      <p>This is a self-paced course designed to help you learn Scala</p>
+      <p>
+        We learn best by doing so grab
+        <a href="https://github.com/leszekgruchala/scala-fast-track">the source</a>
+        and improve your skill!
+      </p>
+      <div>
+      <progress value="51" max="52"></progress>
+      51/52
+    </div>
+    </div>
+      <div id="accordion">
+        <div>
+        <h4 class="accordion-toggle main">ExceptionsOverFutures</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">one must provide execution context</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;one must provide execution context&quot;) {</div><div class="code">      //import scala.concurrent.ExecutionContext.Implicits.global</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and posses a failed Future</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and posses a failed Future&quot;) {</div><div class="code">      Future.failed(new IllegalStateException(&quot;I worked not so well&quot;)).isCompleted shouldBe true</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">failed Future can be handle with onComplete</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;failed Future can be handle with onComplete&quot;) {</div><div class="code">      val failedFuture = Future.failed(new IllegalStateException(&quot;I worked not so well&quot;))</div><div class="code">      failedFuture onComplete {</div><div class="code">        case Success(result) =&gt; fail(&quot;Success is not invoked in failed future&quot;)</div><div class="code">        case Failure(ex) =&gt; ex shouldBe a [IllegalStateException]</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and with onFailure</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and with onFailure&quot;) {</div><div class="code">      val failedFuture = Future.failed(new IllegalStateException(&quot;I worked not so well&quot;))</div><div class="code">      failedFuture onFailure {</div><div class="code">        case exception =&gt; exception shouldBe a [IllegalStateException]</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">whereas onSuccess will not be invoked at all</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;whereas onSuccess will not be invoked at all&quot;) {</div><div class="code">      val failedFuture = Future.failed(new IllegalStateException(&quot;I worked not so well&quot;))</div><div class="code">      failedFuture onSuccess {</div><div class="code">        case result =&gt; fail(&quot;Success is not invoked in failed future&quot;)</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and same applies to foreach</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and same applies to foreach&quot;) {</div><div class="code">      val failedFuture = Future.failed(new IllegalStateException(&quot;I worked not so well&quot;))</div><div class="code">      failedFuture.foreach(_ =&gt; fail(&quot;Success is not invoked in failed future&quot;))</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">ProcessingFutures</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">one must provide execution context</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;one must provide execution context&quot;) {</div><div class="code">      //import scala.concurrent.ExecutionContext.Implicits.global</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">so code inside a Future will be processed in a new thread</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;so code inside a Future will be processed in a new thread&quot;) {</div><div class="code">      val id = Thread.currentThread().getId</div><div class="code">      Future(Thread.currentThread().getId).map(i =&gt; i should not equal id)</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">but one can also define completed successful Future</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;but one can also define completed successful Future&quot;) {</div><div class="code">      Future.successful(&quot;I am already completed!&quot;).isCompleted shouldBe true</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">as well failed Future</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;as well failed Future&quot;) {</div><div class="code">      Future.failed(new IllegalStateException()).isCompleted shouldBe true</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">single Future is easy to process with one of available functions</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;single Future is easy to process with one of available functions&quot;) {</div><div class="code">      val f = Future(&quot;...processing...&quot;)</div><div class="code"></div><div class="code">      f onSuccess {</div><div class="code">        case result =&gt; result shouldBe a [String]</div><div class="code">      }</div><div class="code"></div><div class="code">      f foreach(r =&gt; r shouldBe a [String])</div><div class="code"></div><div class="code">      f onFailure {</div><div class="code">        case ex =&gt; fail(&quot;Not invoked for successful futures&quot;)</div><div class="code">      }</div><div class="code"></div><div class="code">      f onComplete {</div><div class="code">        case Success(result) =&gt; result shouldBe a [String]</div><div class="code">        case Failure(ex) =&gt; fail(&quot;Not invoked for successful futures&quot;)</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">whereas multiple Futures with for comprehension</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;whereas multiple Futures with for comprehension&quot;) {</div><div class="code">      val future_A = Future(&quot;A&quot;)</div><div class="code">      val future_B = Future(2)</div><div class="code"></div><div class="code">      val combined = for {</div><div class="code">        a &lt;- future_A</div><div class="code">        b &lt;- future_B</div><div class="code">        c &lt;- Future(5L)</div><div class="code">      } yield (a, b, c)</div><div class="code"></div><div class="code">      combined.foreach{</div><div class="code">        result =&gt;</div><div class="code">          result._1 shouldBe a [String]</div><div class="code">          result._2 shouldBe a [Integer]</div><div class="code">          result._3 shouldBe a [java.lang.Long]</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">where for comprehension is just syntactic sugar</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;where for comprehension is just syntactic sugar&quot;) {</div><div class="code">      val future_A = Future(&quot;A&quot;)</div><div class="code">      val future_B = Future(&quot;B&quot;)</div><div class="code"></div><div class="code">      future_A.flatMap(</div><div class="code">        (f_A) =&gt; future_B.flatMap(</div><div class="code">          (f_B) =&gt; Future(&quot;C&quot;).map(</div><div class="code">            (f_C) =&gt; scala.Tuple3(f_A, f_B, f_C)))</div><div class="code">      )</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">one can also go over sequence of Futures</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;one can also go over sequence of Futures&quot;) {</div><div class="code">      val seqOfFutures: Seq[Future[String]] = Seq(Future(&quot;A&quot;), Future(&quot;B&quot;))</div><div class="code"></div><div class="code">      val futureOfResults: Future[Seq[String]] = Future.sequence(seqOfFutures)</div><div class="code"></div><div class="code">      futureOfResults foreach(l =&gt; l shouldEqual List(&quot;A&quot;, &quot;B&quot;))</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">as well travers in parallel to apply some function</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;as well travers in parallel to apply some function&quot;) {</div><div class="code">      val letters = Seq(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;)</div><div class="code">      val updatedFutureOfResults: Future[Seq[String]] = Future.traverse(letters)(elem =&gt; Future(elem.toLowerCase))</div><div class="code"></div><div class="code">      updatedFutureOfResults foreach(l =&gt; l should contain only (&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">EitherThisOrThat</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">represents a value of one of two possible types (a disjoint union.) Instances of Either are either an instance of scala.util.Left or scala.util.Right. These can be used to return normal types or exception as Left and valid type/value as Right.</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      &quot;These can be used to return normal types or exception as Left and valid type/value as Right.&quot;) {</div><div class="code">      val either: Either[Exception, Int] = try {</div><div class="code">        Right(&quot;124123&quot;.toInt)</div><div class="code">      } catch {</div><div class="code">        case e: Exception =&gt; Left(e)</div><div class="code">        //or any other type</div><div class="code">        //case e: Exception =&gt; Left(&quot;the left side&quot;)</div><div class="code">      }</div><div class="code">      either.right shouldBe a [RightProjection[_, _]]</div><div class="code">      either.left shouldBe a [LeftProjection[_, _]]</div><div class="code">      either.right.get === 124123</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to explicitly define Left</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to explicitly define Left&quot;) {</div><div class="code">      val badValue = Left(new IllegalArgumentException)</div><div class="code"></div><div class="code">      badValue.isLeft shouldBe true</div><div class="code">      badValue.isRight shouldBe false</div><div class="code"></div><div class="code">      badValue.a shouldBe an [IllegalArgumentException]</div><div class="code">      badValue.left shouldBe a [LeftProjection[_, _]]//[LeftProjection[IllegalArgumentException, Nothing]]</div><div class="code">      badValue.right shouldBe a [RightProjection[_, _]]//[RightProjection[IllegalArgumentException, Nothing]]</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to explicitly define Right</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to explicitly define Right&quot;) {</div><div class="code">      val goodValue = Right(&quot;The right result&quot;)</div><div class="code"></div><div class="code">      goodValue.b shouldBe a [String]</div><div class="code">      goodValue.left shouldBe a [LeftProjection[_, _]]//[LeftProjection[Nothing, String]]</div><div class="code">      goodValue.right shouldBe a [RightProjection[_, _]]//[RightProjection[Nothing, String]]</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to pattern match on Either</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to pattern match on Either&quot;) {</div><div class="code">      val either: Either[String, Int] = Left(&quot;value&quot;)</div><div class="code">      either match {</div><div class="code">        case Left(l) =&gt; l shouldBe &quot;value&quot;</div><div class="code">        case Right(r) =&gt; fail(&quot;Right is not used&quot;)</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">one can maintain Left/Right in functional way</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;one can maintain Left/Right in functional way&quot;) {</div><div class="code">      val goodValue = Right(List(10, 3, 6, 1))</div><div class="code">      goodValue.right map(_.size) shouldBe Right(4)</div><div class="code">      goodValue.right.map(a =&gt; a.filter(_ &lt;= 5)) shouldBe Right(List(3, 1))</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to use for comprehensions</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to use for comprehensions&quot;) {</div><div class="code">      val goodValue = Right(List(10, 3, 6, 1))</div><div class="code">      (for (r &lt;- goodValue.right) yield r.head) shouldBe Right(10)</div><div class="code">    }</div><div class="code">  }</div><div class="code">}</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">Implicits</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">need special import</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;need special import&quot;) {</div><div class="code">      import scala.language.implicitConversions</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to enrich types</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to enrich types&quot;) {</div><div class="code">      class RichString(a: String) {</div><div class="code">        implicit def stringToInt(value: String): Int = Integer.valueOf(value)</div><div class="code"></div><div class="code">        def *(b: Int): Int = b * a //will not compile without implicit</div><div class="code">      }</div><div class="code">      new RichString(&quot;3&quot;) * 2 shouldBe 6</div><div class="code"></div><div class="code">      class RicherString(a: String) {</div><div class="code">        def scream = a.toUpperCase</div><div class="code">      }</div><div class="code">      implicit def enrichString(b: String): RicherString = new RicherString(b) //method name doesn't matter, types matters</div><div class="code">      &quot;quiet&quot;.scream shouldBe &quot;QUIET&quot;</div><div class="code"></div><div class="code">      //Scala has RichInt, RichBoolean etc</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows to look for needed type</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows to look for needed type&quot;) {</div><div class="code">      import implicits.Implicitly._ //don't want to work inside spec</div><div class="code">      new B().doStuff shouldBe &quot;Found secret message: let's roll&quot;</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">are helpful if one needs commonly used type without explicit need to be passed around</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;are helpful if one needs commonly used type without explicit need to be passed around&quot;) {</div><div class="code">      class Prefix(prefix: String) {</div><div class="code">        override def toString: String = prefix</div><div class="code">      }</div><div class="code"></div><div class="code">      class Enrichment(a: String) {</div><div class="code">        def welcome(implicit prefix: Prefix) = prefix + a</div><div class="code">      }</div><div class="code"></div><div class="code">      implicit def stringToEnrichment(a: String): Enrichment = new Enrichment(a)</div><div class="code"></div><div class="code">      implicit val defaultPrefix = new Prefix(&quot;Woohooo! &quot;)</div><div class="code"></div><div class="code">      &quot;JUG&quot;.welcome shouldBe &quot;Woohooo! JUG&quot;</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">MethodsAndFunctions</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">can be procedures which return Unit and have side effects</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;can be procedures which return Unit and have side effects&quot;) {</div><div class="code">      def pr(x: Int): Unit = println(x)</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">can be pure functions and referentially transparent</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;can be pure functions and referentially transparent&quot;) {</div><div class="code">      val f = (x: Int) =&gt; x</div><div class="code"></div><div class="code">      f shouldBe a [Function1[_, _]]</div><div class="code">      f shouldBe a [(_) =&gt; _]</div><div class="code">      f(3) shouldBe 3</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and they don't need return type specified</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and they don't need return type specified&quot;) {</div><div class="code">      def square(x: Int) = x * x</div><div class="code"></div><div class="code">      square(5) shouldBe 25</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">can be passed as other arguments</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;can be passed as other arguments&quot;) {</div><div class="code">      val f = (x: Int) =&gt; x - 2</div><div class="code">      def square(x: Int) = x * x</div><div class="code">      (1 to 3).map(f).toList shouldBe List(-1, 0, 1)</div><div class="code"></div><div class="code">      def invoke(x: Int =&gt; Int) = x(4)</div><div class="code"></div><div class="code">      invoke(square) shouldBe 16</div><div class="code">      invoke(f) shouldBe 2</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">can be anonymous too named function literals</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;can be anonymous too named function literals&quot;) {</div><div class="code">      def invoke(x: Int =&gt; Int) = x(4)</div><div class="code">      invoke((x: Int) =&gt; x * x - x) shouldBe 12</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">are great for safe data types and values checks</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;are great for safe data types and values checks&quot;) {</div><div class="code">      val oneToTen = 1 to 10</div><div class="code">      val isEven: PartialFunction[Int, Int] = {</div><div class="code">        case x if x % 2 == 0 =&gt; x</div><div class="code">      }</div><div class="code"></div><div class="code">      // the method collect can use isDefinedAt to select which members to collect</div><div class="code">      oneToTen collect isEven shouldBe IndexedSeq(2, 4, 6, 8, 10)</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and allow chaining</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and allow chaining&quot;) {</div><div class="code">      val onlyOdds = Seq(1, 3, 5, 7)</div><div class="code">      val isEven: PartialFunction[Int, Int] = {</div><div class="code">        case x if x % 2 == 0 =&gt; x</div><div class="code">      }</div><div class="code">      val isOdd: PartialFunction[Int, Int] = {</div><div class="code">        case x if x % 2 == 1 =&gt; x</div><div class="code">      }</div><div class="code">      onlyOdds map (isEven orElse isOdd) shouldBe IndexedSeq(1, 3, 5, 7)</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">are functions which not all of their arguments are passed</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;are functions which not all of their arguments are passed&quot;) {</div><div class="code">      def calculateTaxes(price: Double, tax: Double) = price + (price * tax)</div><div class="code"></div><div class="code">      val countForPL = calculateTaxes(_: Double, 0.23)</div><div class="code">      val countForUK = calculateTaxes(_: Double, 0.20)</div><div class="code"></div><div class="code">      countForPL(3.12) shouldBe 3.8376</div><div class="code"></div><div class="code">      countForUK(23.62) shouldBe 28.344</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">ClassesAndObjects</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">which save heap allocation</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;which save heap allocation&quot;) {</div><div class="code">        //at compile time it's an object but at runtime it's a String</div><div class="code">        //value class may not be a member of another class</div><div class="code">        //case class Msisdn(number: String) extends AnyVal</div><div class="code">        //class Wrapper(val number: String) extends AnyVal</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">with benefits such as:
+   - immutable, by default constructor treat parameters as `val`s
+   - build in toString, equals, hashcode
+   - no need to use 'new' keyword
+   - build in getters for fields (or with setters if fields defined with 'var')
+   - automatically created companion object of the same name with apply/unapply (extractors (pattern matching))</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">          |   - automatically created companion object of the same name with apply/unapply (extractors (pattern matching))&quot;&quot;&quot;.stripMargin) {</div><div class="code">        val m = Money(//named arguments, order doesn't matter</div><div class="code">          value = 12.3,</div><div class="code">          currency = &quot;PLN&quot;</div><div class="code">        )</div><div class="code">        m.value shouldBe 12.3</div><div class="code">        assert(Money(12.3, &quot;PLN&quot;) == Money(12.3, &quot;PLN&quot;))</div><div class="code">        assert(!Money(12.3, &quot;PLN&quot;).eq(Money(12.3, &quot;PLN&quot;)))</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">with no special power</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;with no special power&quot;) {</div><div class="code">        class Producer(msg: String, val name: String)</div><div class="code">        val producer = new Producer(&quot;hello&quot;, &quot;BMW&quot;)</div><div class="code">        //producer.msg//does not compile, msg is private</div><div class="code">        producer.name shouldBe &quot;BMW&quot;</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and there is a way to define multiple constructors</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;and there is a way to define multiple constructors&quot;) {</div><div class="code">        class WrappedOver(text: String, num: Int) {</div><div class="code">          //body of the constructor, any vals will be initialized immediately</div><div class="code">          def this(num: Int) {</div><div class="code">            this(&quot;Something initial&quot;, num)</div><div class="code">          }</div><div class="code">        }</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">equals, hashcode and toString must be defined explicitly</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;equals, hashcode and toString must be defined explicitly&quot;) {</div><div class="code">        class Car(val name: String, val producer: String) {</div><div class="code"></div><div class="code">          override def toString: String = s&quot;name: $name \n producer: $producer&quot;</div><div class="code"></div><div class="code">          //helpful method to check if can equal subclasses</div><div class="code">          def canEqual(other: Any): Boolean = other.isInstanceOf[Car]</div><div class="code"></div><div class="code">          override def equals(other: Any): Boolean = other match {</div><div class="code">            case that: Car =&gt;</div><div class="code">              (that canEqual this) &amp;&amp;</div><div class="code">                name == that.name &amp;&amp;</div><div class="code">                producer == that.producer</div><div class="code">            case _ =&gt; false</div><div class="code">          }</div><div class="code"></div><div class="code">          override def hashCode(): Int = {</div><div class="code">            val state = Seq(name, producer)</div><div class="code">            state.map(_.hashCode()).foldLeft(0)((a, b) =&gt; 31 * a + b)</div><div class="code">          }</div><div class="code">        }</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">for patter matching extractors are needed</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;for patter matching extractors are needed&quot;) {</div><div class="code">        class Car(val name: String, val producer: String)</div><div class="code">        object Car {//companion object</div><div class="code">        def apply(name: String, producer: String) = new Car(name, producer)</div><div class="code">          def apply(name: String) = new Car(name, &quot;FSO&quot;)</div><div class="code">          def unapply(car: Car): Option[(String, String)] = Some((car.name, car.producer))</div><div class="code">        }</div><div class="code">        object audiCar {</div><div class="code">          def unapply(car: Car): Boolean = car.producer == &quot;AUDI&quot;</div><div class="code">        }</div><div class="code"></div><div class="code">        Car(&quot;Polonez&quot;) match {</div><div class="code">          case Car(name, &quot;FSO&quot;) =&gt; name shouldBe &quot;Polonez&quot;</div><div class="code">          case Car(name, producer) =&gt; fail(&quot;Not used now&quot;)</div><div class="code">        }</div><div class="code">        Car(&quot;M5&quot;, &quot;BMW&quot;) match {</div><div class="code">          case Car(name, &quot;BMW&quot;) =&gt; name shouldBe &quot;M5&quot;</div><div class="code">          case Car(name, producer) =&gt; fail(&quot;Not used now&quot;)</div><div class="code">        }</div><div class="code">        Car(&quot;Q7&quot;, &quot;AUDI&quot;) match {</div><div class="code">          case Car(name, &quot;FSO&quot;) =&gt; fail(&quot;Not used now&quot;)</div><div class="code">          case car @ audiCar() =&gt;</div><div class="code">            car.name shouldBe &quot;Q7&quot;</div><div class="code">            car.producer shouldBe &quot;AUDI&quot;</div><div class="code"></div><div class="code">          case _ =&gt; fail(&quot;Default case, not used now&quot;)</div><div class="code">        }</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">with number of benefits:
+   - singleton, no need to use 'new' keyword
+   - objects are independent entities, e.g. they can be used as method arguments, as target for implicit conversions, and case objects in pattern matching
+   - objects can inherit from classes or traits
+   - an object has its own type
+   - objects can restrict the access of its members</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">          |   - objects can restrict the access of its members&quot;&quot;&quot;.stripMargin) {</div><div class="code">        object SuperService {</div><div class="code">          def buildSuperStuff = &quot;smth&quot;</div><div class="code">        }</div><div class="code">        SuperService.buildSuperStuff shouldBe &quot;smth&quot;</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">can have classes, case classes and value classes</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;can have classes, case classes and value classes&quot;) {</div><div class="code">        class Producer(</div><div class="code">          msg: String = &quot;hello!&quot;,</div><div class="code">          name: String = getName</div><div class="code">        )</div><div class="code">        def getName = &quot;Name&quot;</div><div class="code">        case class Money(value: Double = 1L)</div><div class="code">        //class Wrapper(val number: String = &quot;ASD&quot;) extends AnyVal</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">including methods</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">      it(&quot;including methods&quot;) {</div><div class="code">        def getName(by: String = &quot;John&quot;) = s&quot;Name: $by&quot;</div><div class="code"></div><div class="code">        getName() shouldBe &quot;Name: John&quot;</div><div class="code">      }</div>
+    </div>
+          </div>
+        </div></p>
+        </div>
+      </div><div>
+        <h4 class="accordion-toggle main">Trying</h4>
+        <div class="accordion-content">
+          <p><div>
+          <h4 class="accordion-toggle">is a container that holds one of two values: expected return of type T</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;is a container that holds one of two values: expected return of type T&quot;) {</div><div class="code">      Try{ 42 }.isSuccess shouldBe true</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">or an exception</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;or an exception&quot;) {</div><div class="code">      Try{ throw new Exception(&quot;This exception could cause trouble, but Try keeps it under control&quot;) }.isFailure shouldBe true</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">that prevents exceptions from unwinding the stack</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;that prevents exceptions from unwinding the stack&quot;) {</div><div class="code">      Try{ throw new Exception(&quot;This exception won't crash the program!&quot;) }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">but allows us to throw it if we wish to do so</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;but allows us to throw it if we wish to do so&quot;) {</div><div class="code">      intercept[NumberFormatException] {</div><div class="code">        failedCast.get</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">getting the value for success is also easy</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;getting the value for success is also easy&quot;) {</div><div class="code">      validCast.get shouldBe 42</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">when you aren't sure what is the outcome Try gives you a few handy tools </h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;when you aren't sure what is the outcome Try gives you a few handy tools &quot;) {</div><div class="code">      failedCast.getOrElse(123) shouldBe 123</div><div class="code">      validCast.map(_ * 2).getOrElse(0) shouldBe 84</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">works great with patter matching</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;works great with patter matching&quot;) {</div><div class="code">      failedCast match {</div><div class="code">        case Failure(exceptionThrownAtRuntime) =&gt; exceptionThrownAtRuntime shouldBe a [NumberFormatException]</div><div class="code">        case _ =&gt; fail(&quot;This should not happen&quot;)</div><div class="code">      }</div><div class="code">      validCast match {</div><div class="code">        case Success(computedValue) =&gt; computedValue shouldBe 42</div><div class="code">        case _ =&gt; fail(&quot;This should not happen&quot;)</div><div class="code">      }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">and with for-comprehension, too</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;and with for-comprehension, too&quot;) {</div><div class="code">      for { v &lt;- validCast } yield { v shouldBe 43 }</div><div class="code">      for { v &lt;- failedCast } yield { fail(&quot;We do iterate only over Success values&quot;) }</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">allows us to selectively recover from errors with custom actions or default values</h4>
+          <div class="accordion-content">
+            <div>
+      <div class="code">    it(&quot;allows us to selectively recover from errors with custom actions or default values&quot;) {</div><div class="code">      val fixedCast = failedCast.recover {</div><div class="code">        case _:NumberFormatException =&gt; 0</div><div class="code">      }</div><div class="code">      fixedCast.isSuccess shouldBe true</div><div class="code">      fixedCast.get shouldBe 0</div><div class="code">    }</div>
+    </div>
+          </div>
+        </div><div>
+          <h4 class="accordion-toggle">TODO: can be used as Option</h4>
+          <div class="accordion-content">
+            <p class="pending">PENDING EXCERCISE</p>
+          </div>
+        </div></p>
+        </div>
+      </div>
+      </div>
+    </div>
+      </body>
+    </html>
