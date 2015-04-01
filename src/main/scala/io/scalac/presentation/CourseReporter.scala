@@ -13,15 +13,45 @@ class CourseReporter extends Reporter {
 
   private var tests = List[Event]() ///TODO: restrict types to something with `suiteName` property
 
-  def getStyle() =
+  val progressBarStyle =
     """
+      |progress[value] {
+      |  /* Reset the default appearance */
+      |  -webkit-appearance: none;
+      |   appearance: none;
+      |
+      |  width: 250px;
+      |  height: 20px;
+      |}
+      |
+      |progress[value]::-webkit-progress-value {
+      |  background-image:
+      |	   -webkit-linear-gradient(-45deg,
+      |	                           transparent 33%, rgba(0, 0, 0, .1) 33%,
+      |	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+      |	   -webkit-linear-gradient(top,
+      |	                           rgba(255, 255, 255, .25),
+      |	                           rgba(0, 0, 0, .25)),
+      |	   -webkit-linear-gradient(left, #f44, #6a4);
+      |
+      |    border-radius: 2px;
+      |    background-size: 35px 20px, 100% 100%, 100% 100%;
+      |}
+    """.stripMargin
+
+  def getStyle() =
+    s"""
       |.accordion-toggle {cursor: pointer; font-style: oblique; font-weight: normal }
       |.accordion-toggle.main {cursor: pointer; font-size: 120%; font-weight: bold }
       |.accordion-content {display: none;}
       |.accordion-content.default {display: block;}
       |
-      |.code {background-color: grey;}
-      |.pending {background-color:  red;}
+      |.code {background-color: #6a4;}
+      |.pending {background-color: #f44;}
+      |
+      |$progressBarStyle
+      |
+      |#content { margin-right: auto; margin-left: auto; width: 50%; }
     """.stripMargin
 
   def createAccordionScript() =
@@ -104,13 +134,33 @@ class CourseReporter extends Reporter {
       case e : TestSucceeded => true
       case _ => false
     }
-    <progress value={ ""+completed } max={ ""+all }></progress>
+    <div>
+      <progress value={ ""+completed } max={ ""+all }></progress>
+      {completed}/{all}
+    </div>
   }
 
-  def createBody() = {
-    <div id="accordion">
+  def showHeader() =
+    <div>
+      <span>
+        <a href="http://www.scalac.io/"><img src="logo.jpg"></img></a>
+      </span>
+      <h1>Welcome to Scala!</h1>
+      <p>This is a self-paced course designed to help you learn Scala</p>
+      <p>
+        We learn best by doing so grab
+        <a href="https://github.com/leszekgruchala/scala-fast-track">the source</a>
+        and improve your skill!
+      </p>
       {showProgress()}
-      {showResults()}
+    </div>
+
+  def createBody() = {
+    <div id="content">
+      {showHeader()}
+      <div id="accordion">
+        {showResults()}
+      </div>
     </div>
   }
 
