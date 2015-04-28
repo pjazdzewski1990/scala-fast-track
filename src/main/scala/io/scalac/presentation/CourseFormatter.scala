@@ -29,7 +29,7 @@ class CourseFormatter(tests: List[Event]) {
       |	   -webkit-linear-gradient(top,
       |	                           rgba(255, 255, 255, .25),
       |	                           rgba(0, 0, 0, .25)),
-      |	   -webkit-linear-gradient(left, #f44, #6a4);
+      |	   -webkit-linear-gradient(left, #333, #f44);
       |
       |    border-radius: 2px;
       |    background-size: 35px 20px, 100% 100%, 100% 100%;
@@ -47,8 +47,8 @@ class CourseFormatter(tests: List[Event]) {
        |.pending {background-color: #f44;}
        |
        |$progressBarStyle
-          |
-          |#content { margin-right: auto; margin-left: auto; width: 50%; }
+       |
+       |#content { margin-right: auto; margin-left: auto; width: 50%; }
     """.stripMargin
 
   def createAccordionScript() =
@@ -75,9 +75,9 @@ class CourseFormatter(tests: List[Event]) {
     val source = wholeFile.drop(line-1).takeWhile(!_.contains("//~"))
 
     <div>
-      {source.map( s => //get spaces right
-      <div class="code">{s}</div>
-    )}
+      {source.map( s => //TODO:get spaces right
+        <div class="code">{s}</div>
+      )}
     </div>
   }
 
